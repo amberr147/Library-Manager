@@ -1,0 +1,118 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
+
+package controllers;
+
+import dao.BookDAO;
+import dto.Book;
+import java.io.IOException;
+import java.io.PrintWriter;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+
+/**
+ *
+ * @author DELL
+ */
+public class SearchBookController extends HttpServlet {
+   
+    /** 
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet SearchBookController</title>");  
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet SearchBookController at " + request.getContextPath () + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
+    } 
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /** 
+     * Handles the HTTP <code>GET</code> method.
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        //search book title
+        PrintWriter out = response.getWriter();
+        response.setCharacterEncoding("utf-8");
+        String findTitle = request.getParameter("txtsearch");
+        out.print("<html><body>");
+        
+        if(findTitle != null && !findTitle.isEmpty()){
+            BookDAO d = new BookDAO();
+            ArrayList<Book> list = d.getBooks(findTitle);
+            //xuat ket qua tim kiem(list), xuat ra man hinh
+            if(list != null && !list.isEmpty()){
+                for(Book book: list){
+                    out.print("<div style = 'float:left; margin: 1%'>");
+                    out.print("<form>");
+                    
+                    out.print("<img src = '"+ book.getUrl() +"'/>");
+                    out.print("<br/>title: " + book.getTitle());
+                    out.print("<br/>Categoty: " + book.getCategory());
+                    out.print("<br/> Available copy: " + book.getAvailable_copies());
+                    if(book.getAvailable_copies() > 0){
+                        out.print("<br/><input type = 'submit' value = 'request borrow'");
+                    }
+                    
+                    out.print("</form>");
+                    out.print("</div>");
+                } 
+            } else{
+                out.print("<h3> Not Found </h3>");
+                out.print("<a href = 'index.html'>Home</a>");
+            } 
+        } else{
+            out.print("em yeu co");
+            out.print("<a href = 'index.html'");
+        }
+        out.print("</html>/<body>");
+    } 
+
+    /** 
+     * Handles the HTTP <code>POST</code> method.
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /** 
+     * Returns a short description of the servlet.
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
+
+}

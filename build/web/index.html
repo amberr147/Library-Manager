@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+    <div style="background:#999661; height:50px;padding: 20px; " >
+    <a href="index.html">home</a>|<a href="Login.html">Login</a>
+    <form action="SearchBookController" style="float:right">
+            <input type="text" name="txtsearch" />
+            <input type="submit" value="find"/>
+    </form>
+    </div>    
+    <div style="float:left; width: 70%;">coming soon</div>    
+    <div style="float:left; width: 30%; background: #ffffcc;">    
+        <form action="RegisterController" method="post" style=" padding: 5%" >
+            <p>name:<input type="text" name="txtname" required="">*</p>
+            <p>email<input type="text" name="txtemail" required="">*</p>
+            <p>password:<input type="password" name="txtpassword" required="">*</p>
+            <p>confirm password:<input type="password" name="txtconfirmpassword" required="">*</p>
+            <p><input type="submit" name="btn" value="submit"></p>
+        </form>
+      </div>   
+    </body>
+</html>
