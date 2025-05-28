@@ -12,6 +12,22 @@
         <servlet-name>ConfigController</servlet-name>
         <servlet-class>controllers.ConfigController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdminDashboard</servlet-name>
+        <servlet-class>view.AdminDashboard</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserDashboard</servlet-name>
+        <servlet-class>view.UserDashboard</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LogoutController</servlet-name>
+        <servlet-class>controllers.LogoutController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewSearchBook</servlet-name>
+        <servlet-class>view.ViewSearchBook</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterController</servlet-name>
         <url-pattern>/RegisterController</url-pattern>
@@ -23,6 +39,22 @@
     <servlet-mapping>
         <servlet-name>ConfigController</servlet-name>
         <url-pattern>/ConfigController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminDashboard</servlet-name>
+        <url-pattern>/AdminDashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserDashboard</servlet-name>
+        <url-pattern>/UserDashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutController</servlet-name>
+        <url-pattern>/LogoutController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewSearchBook</servlet-name>
+        <url-pattern>/ViewSearchBook</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

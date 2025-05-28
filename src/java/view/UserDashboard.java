@@ -2,14 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controllers;
+package view;
 
-import dao.UserDAO;
 import dto.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,8 +17,7 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author DELL
  */
-@WebServlet(name = "LoginController", urlPatterns = {"/LoginController"})
-public class LoginController extends HttpServlet {
+public class UserDashboard extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,20 +28,42 @@ public class LoginController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet LoginController</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet LoginController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+//    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+//            throws ServletException, IOException {
+//        response.setContentType("text/html;charset=UTF-8");
+//        try ( PrintWriter out = response.getWriter()) {
+//            /* TODO output your page here. You may use following sample code. */
+//            out.println("<!DOCTYPE html>");
+//            out.println("<html>");
+//            out.println("<head>");
+//            out.println("<title>Servlet UserDashboard</title>");
+//            out.println("</head>");
+//            out.println("<body>");
+//            out.println("<h1>Servlet UserDashboard at " + request.getContextPath() + "</h1>");
+//            out.println("</body>");
+//            out.println("</html>");
+//        }
+//    }
+
+    public void processRequest(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            HttpSession s = request.getSession();
+            if (s.getAttribute("user") == null) {
+                response.sendRedirect("index.html");
+            } else {
+                User us = (User) s.getAttribute("user");
+                PrintWriter out = response.getWriter();
+                out.print("<html><body>");
+
+                out.print("<h4>Welcome " + us.getName() + "comback</h4>");
+                out.print("<p><a href = 'LogoutController'>Logout</a></p>");
+                out.print("<p><a href = '#'>Change Profile</a></p>");
+
+                out.print("</html></body>");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -74,28 +93,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
-        String email = request.getParameter("txtemail");
-        String password = request.getParameter("txtpassword");
-
-        UserDAO d = new UserDAO();
-        User us = d.checkUserExist(email, password);
-
-        if (us != null) {
-            //tinh nang: welcome, shopping cart, request borrow, change profile,...
-            // luu us object vao session cua client vi can no cho cac tinh nang tiep theo
-            HttpSession s = request.getSession();
-            s.setAttribute("user", us);
-            
-            if (us.getRole().equalsIgnoreCase("admin")) {
-                response.sendRedirect("AdminDashboard"); //la servlet
-            } else if (us.getRole().equalsIgnoreCase("user")) {
-                response.sendRedirect("UserDashboard");  // servlet
-            }
-        } else {
-            out.print("<h1>Login failed. Please try again!</h1>");
-            out.print("<p><a href='index.html'>Back to Home</a></p>");
-        }
+        processRequest(request, response);
     }
 
     /**

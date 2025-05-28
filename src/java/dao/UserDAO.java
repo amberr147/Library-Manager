@@ -91,26 +91,33 @@ public class UserDAO {
     }
 
     //get user in data to login
-    public String checkUserExist(String email, String password) {
-        String role = null;
+    public User checkUserExist(String email, String password) {
+        User user = null;
         Connection cn = null;
         try {
             cn = DBUtils.getConnection();
             if (cn != null) {
-                String sql = "SELECT [role] FROM [dbo].[users] "
-                        + "WHERE [email] = ? AND [password] = ? COLLATE Latin1_General_CS_AS";
+                String sql = "  SELECT [id], [name], [email], [password], [role], [status]\n"
+                        + "  FROM [dbo].[users]\n"
+                        + "  WHERE [email] = ? AND [password] = ? COLLATE Latin1_General_CS_AS";
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setString(1, email);
                 pst.setString(2, password);
                 ResultSet rs = pst.executeQuery();
                 if (rs != null && rs.next()) {
-                    role = rs.getString("role");
+                    int id = rs.getInt("id");
+                    String e = rs.getString("email");
+                    String name = rs.getString("name");
+                    String role = rs.getString("role");
+                    String status = rs.getString("status");
+                    
+                    user = new User(id, name, e, password, role, status);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return role; // null nếu không tồn tại
+        return user; // null nếu không tồn tại
     }
 
 }
