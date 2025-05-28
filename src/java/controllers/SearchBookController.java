@@ -64,15 +64,16 @@ public class SearchBookController extends HttpServlet {
         
         if(findTitle != null && !findTitle.isEmpty()){
             BookDAO d = new BookDAO();
-            ArrayList<Book> list = d.getBooks(findTitle);
+            ArrayList<Book> list = d.getBooks(findTitle, findTitle, findTitle);
             //xuat ket qua tim kiem(list), xuat ra man hinh
             if(list != null && !list.isEmpty()){
                 for(Book book: list){
-                    out.print("<div style = 'float:left; margin: 1%'>");
+                    out.print("<div style='width:200px; height:350px; margin:15px; padding:10px; border:1px solid #ccc; border-radius:8px; display:inline-block; vertical-align:top; text-align:center; '>");
                     out.print("<form>");
                     
-                    out.print("<img src = '"+ book.getUrl() +"'/>");
-                    out.print("<br/>title: " + book.getTitle());
+                    out.print("<img src='" + book.getUrl() + "' style='width:150px; height:200px; object-fit:cover;'/>");
+                    out.print("<br/>Title: " + book.getTitle());
+                    out.print("<br/>Author: " + book.getAuthor());
                     out.print("<br/>Categoty: " + book.getCategory());
                     out.print("<br/> Available copy: " + book.getAvailable_copies());
                     if(book.getAvailable_copies() > 0){

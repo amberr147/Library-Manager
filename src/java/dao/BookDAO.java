@@ -17,7 +17,7 @@ import mylib.DBUtils;
  */
 public class BookDAO {
 
-    public ArrayList<Book> getBooks(String name) {
+    public ArrayList<Book> getBooks(String name, String au, String cate) {
         ArrayList<Book> list = new ArrayList<>();
         Connection cn = null;
         try {
@@ -25,9 +25,11 @@ public class BookDAO {
             if (cn != null) {
                 String sql = "select id,title,author,isbn,category,published_year,total_copies,available_copies,status,url\n"
                         + "from dbo.books\n"
-                        + "where title like ?";
+                        + "where title like ? or author like ? or category like ?";
                 PreparedStatement st = cn.prepareStatement(sql);
                 st.setString(1, "%" + name + "%");
+                st.setString(2, "%" + au + "%");
+                 st.setString(3, "%" + cate + "%");
                 ResultSet table = st.executeQuery();
                 if (table != null) {
                     while (table.next()) {
