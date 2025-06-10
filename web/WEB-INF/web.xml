@@ -28,6 +28,10 @@
         <servlet-name>ViewSearchBook</servlet-name>
         <servlet-class>view.ViewSearchBook</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ChangeProfileController</servlet-name>
+        <servlet-class>controllers.ChangeProfileController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterController</servlet-name>
         <url-pattern>/RegisterController</url-pattern>
@@ -55,6 +59,10 @@
     <servlet-mapping>
         <servlet-name>ViewSearchBook</servlet-name>
         <url-pattern>/ViewSearchBook</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangeProfileController</servlet-name>
+        <url-pattern>/ChangeProfileController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

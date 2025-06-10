@@ -88,13 +88,17 @@ public class LoginController extends HttpServlet {
             s.setAttribute("user", us);
             
             if (us.getRole().equalsIgnoreCase("admin")) {
-                response.sendRedirect("AdminDashboard"); //la servlet
+                response.sendRedirect("AdminDashboard.jsp"); //la servlet --> chuyen thanh jsp
             } else if (us.getRole().equalsIgnoreCase("user")) {
-                response.sendRedirect("UserDashboard");  // servlet
+                response.sendRedirect("UserDashboard.jsp");  // servlet --> them duoi jsp
             }
         } else {
-            out.print("<h1>Login failed. Please try again!</h1>");
-            out.print("<p><a href='index.html'>Back to Home</a></p>");
+            //day loi tu LoginController ve trang Login de in ra man hinh
+            //muon day thi phai luu data trong upplication(?), session or request
+            //redirect or dispatcher
+            //chon dispatcher: request ben nay cung la request ben kia. in loi ngay tren form minh nhao
+            request.setAttribute("ERROR", "Email or Password is invalid");
+            request.getRequestDispatcher("Login.jsp").forward(request, response);
         }
     }
 

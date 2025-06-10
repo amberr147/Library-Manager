@@ -45,9 +45,9 @@ public class SearchBookController extends HttpServlet {
             BookDAO d = new BookDAO();
             ArrayList<Book> list = d.getBooks(findtitle, findtitle, findtitle);
             //luu list vao
-            request.setAttribute("result", list);
+            request.setAttribute("BOOK_RESULT", list);
             //mo trang viewbook
-            request.getRequestDispatcher("ViewSearchBook").forward(request, response);
+            request.getRequestDispatcher("ViewSearchBook.jsp").forward(request, response);
 
         }
     }

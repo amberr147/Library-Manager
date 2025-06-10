@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package view;
+package controllers;
 
+import dao.UserDAO;
 import dto.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,12 +13,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.sql.Connection;
+import mylib.DBUtils;
 
 /**
  *
  * @author DELL
  */
-public class UserDashboard extends HttpServlet {
+public class ChangeProfileController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -28,42 +31,20 @@ public class UserDashboard extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-//    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-//            throws ServletException, IOException {
-//        response.setContentType("text/html;charset=UTF-8");
-//        try ( PrintWriter out = response.getWriter()) {
-//            /* TODO output your page here. You may use following sample code. */
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet UserDashboard</title>");
-//            out.println("</head>");
-//            out.println("<body>");
-//            out.println("<h1>Servlet UserDashboard at " + request.getContextPath() + "</h1>");
-//            out.println("</body>");
-//            out.println("</html>");
-//        }
-//    }
-
-    public void processRequest(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            HttpSession s = request.getSession();
-            if (s.getAttribute("user") == null) {
-                response.sendRedirect("index.html");
-            } else {
-                User us = (User) s.getAttribute("user");
-                PrintWriter out = response.getWriter();
-                out.print("<html><body>");
-
-                out.print("<h4>Welcome " + us.getName() + "comback</h4>");
-                out.print("<p><a href = 'LogoutController'>Logout</a></p>");
-                out.print("<p><a href = '#'>Change Profile</a></p>");
-
-                out.print("</html></body>");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try ( PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet ChangeProfileController</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet ChangeProfileController at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 
@@ -93,17 +74,34 @@ public class UserDashboard extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            String name = request.getParameter("txtname");
+            String password = request.getParameter("txtpassword");
+            
+            HttpSession session = request.getSession();
+            User us = (User) session.getAttribute("user"); //nho co session la phai ep kieu
+            int id = us.getId();
+            UserDAO d = new UserDAO();
+            int result = d.UpdateUser(id, name, password);
+            
+            if(result == 1){
+                response.sendRedirect("LogoutController");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
+        /**
+         * Returns a short description of the servlet.
+         *
+         * @return a String containing servlet description
+         */
+        @Override
+        public String getServletInfo
+        
+            () {
         return "Short description";
-    }// </editor-fold>
+        }// </editor-fold>
 
-}
+    }

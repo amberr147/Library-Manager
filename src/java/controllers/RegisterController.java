@@ -83,15 +83,15 @@ public class RegisterController extends HttpServlet {
             User user = d.getUserByEmail(email);
             if(user != null){
                 out.print("<h1> Dupplicate email. Please try again ! </h1>");
-                out.print("<p> <a href = 'index.html'> Home </a></p>");
+                out.print("<p> <a href = 'index.jsp'> Home </a></p>");
             } else{
                 int result = d.insertNewUser(name, email, password);
                 if(result >= 1){
                     out.print("<h1> Inserted. Registered successfully ! </h1>");
-                    out.print("<p><a href = 'index.html'> Home </a></p>");
+                    out.print("<p><a href = 'index.jsp'> Home </a></p>");
                 } else{
                     out.print("<h1> Fail. Please try again ! </h1>");
-                    out.print("<p><a href = 'index.html'> Home </a></p>");
+                    out.print("<p><a href = 'index.jsp'> Home </a></p>");
                 }
                 
             }
