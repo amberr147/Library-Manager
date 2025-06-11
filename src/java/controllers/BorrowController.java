@@ -4,8 +4,8 @@
  */
 package controllers;
 
-import dao.UserDAO;
-import dto.User;
+import dao.BookDAO;
+import dto.Book;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,12 +13,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 
 /**
  *
  * @author DELL
  */
-public class ChangeProfileController extends HttpServlet {
+public class BorrowController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,10 +38,10 @@ public class ChangeProfileController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ChangeProfileController</title>");
+            out.println("<title>Servlet BorrowController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ChangeProfileController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet BorrowController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,7 +59,37 @@ public class ChangeProfileController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            String id = request.getParameter("txtid");
+            Book b = null;
+            if (id != null) {
+                BookDAO d = new BookDAO();
+                b = d.getBook(Integer.parseInt(id.trim()));
+            }
+            if (b != null) {
+
+                HttpSession session = request.getSession();
+                ArrayList<Book> list = (ArrayList<Book>) session.getAttribute("txtid");
+                if (list == null) {
+                    list = new ArrayList<>();
+                    list.add(b);
+                } else {
+                    boolean found = false;
+                    for(Book book : list){
+                        if(book.getId() == b.getId()){ //book laf cos sawnx, b laf sawps them doo
+                            found = true;
+                            break;
+                        }
+                    }
+                    if(!found) list.add(b);
+                }
+                session.setAttribute("CART", list);
+                request.getRequestDispatcher("SearchBookController").forward(request, response);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -72,34 +103,17 @@ public class ChangeProfileController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            String name = request.getParameter("txtname");
-            String password = request.getParameter("txtpassword");
-            
-            HttpSession session = request.getSession();
-            User us = (User) session.getAttribute("user"); //nho co session la phai ep kieu
-            int id = us.getId();
-            UserDAO d = new UserDAO();
-            int result = d.UpdateUser(id, name, password);
-            
-            if(result == 1){
-                response.sendRedirect("LogoutController");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        processRequest(request, response);
     }
 
-        /**
-         * Returns a short description of the servlet.
-         *
-         * @return a String containing servlet description
-         */
-        @Override
-        public String getServletInfo
-        
-            () {
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
         return "Short description";
-        }// </editor-fold>
+    }// </editor-fold>
 
-    }
+}

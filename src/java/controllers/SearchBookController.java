@@ -47,7 +47,7 @@ public class SearchBookController extends HttpServlet {
             //luu list vao
             request.setAttribute("BOOK_RESULT", list);
             //mo trang viewbook
-            request.getRequestDispatcher("ViewSearchBook.jsp").forward(request, response);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
 
         }
     }
