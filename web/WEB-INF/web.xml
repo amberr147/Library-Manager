@@ -36,6 +36,18 @@
         <servlet-name>BorrowController</servlet-name>
         <servlet-class>controllers.BorrowController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>BookController</servlet-name>
+        <servlet-class>controllers.BookController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ADController</servlet-name>
+        <servlet-class>controllers.ADController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SendBorrowRequestController</servlet-name>
+        <servlet-class>controllers.SendBorrowRequestController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterController</servlet-name>
         <url-pattern>/RegisterController</url-pattern>
@@ -71,6 +83,18 @@
     <servlet-mapping>
         <servlet-name>BorrowController</servlet-name>
         <url-pattern>/BorrowController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BookController</servlet-name>
+        <url-pattern>/BookController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ADController</servlet-name>
+        <url-pattern>/ADController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SendBorrowRequestController</servlet-name>
+        <url-pattern>/SendBorrowRequestController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

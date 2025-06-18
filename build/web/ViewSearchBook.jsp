@@ -1,12 +1,12 @@
 <%-- 
     Document   : ViewSearchBook
-    Created on : Jun 3, 2025, 9:40:04 PM
-    Author     : DELL
+    Created on : May 31, 2025, 4:05:48 PM
+    Author     : user
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import = "java.util.ArrayList" %>
-<%@page import ="dto.Book" %>
+<%@page  import="java.util.ArrayList" %>
+<%@page import="dto.Book" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,36 +14,31 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <% //nho import thu vien
-            // Lấy danh sách kết quả tìm kiếm
-            ArrayList<Book> list = (ArrayList<Book>) request.getAttribute("BOOK_RESULT");
-            
-            // Kiểm tra kết quả
-            if (list != null && !list.isEmpty()) {
+        <%
+        //doc RESULT trong request dc tao boi SearchBookController
+            ArrayList<Book> list=(ArrayList<Book>) request.getAttribute("RESULT");
+           
+            //xuat ket qua tim kiem(list)
+            if(list!=null && !list.isEmpty()){
                 for (Book book : list) {
-                    out.print("<div style='width:200px; height:350px; margin:15px; padding:10px; border:1px solid #ccc; border-radius:8px; display:inline-block; vertical-align:top; text-align:center; '>");
+                    out.print("<div style='float:left;margin:1%'>");
                     out.print("<form>");
-                    out.print("<img src='" + book.getUrl() + "' width='150' height='150' />");
-                    out.print("<br/>ID: " + book.getId());
-                    out.print("<br/>Title: " + book.getTitle());
-                    out.print("<br/>Category: " + book.getCategory());
-                    out.print("<br/>Available Copy: " + book.getAvailable_copies());
-
-                    if (book.getAvailable_copies() > 0) {
-                        out.print("<br/><input type='submit' value='Request Borrow'/><br/>");
-                    } else {
-                        out.print("<br/><b>Chưa có</b>");
-                        out.print("<br/><a href='index.jsp'>Quay lại</a>");
+                    out.print("<img src='"+ book.getUrl() +"'   />");
+                    out.print("<br/>id:" + book.getId());
+                    out.print("<br/>title:" + book.getTitle());
+                    out.print("<br/>category:" + book.getCategory());
+                    out.print("<br/>available copy:" + book.getAvailable_copies());
+                    if(book.getAvailable_copies()>0){
+                        out.print("<br/><input type='submit' value='request borrow' /> ");
                     }
-
                     out.print("</form>");
                     out.print("</div>");
                 }
-            } else {
-                out.print("<h3>Not found</h3>");
-                out.print("<a href='index.jsp'>Home</a>");
             }
-
+            else{
+                out.print("<h3>not found</h3>");
+                out.print("<a href='index.html'>home</a>");
+            }
         %>
     </body>
 </html>

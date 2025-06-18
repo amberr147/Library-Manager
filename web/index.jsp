@@ -1,12 +1,11 @@
 <%-- 
     Document   : index
-    Created on : Jun 3, 2025, 9:00:47 PM
-    Author     : DELL
+    Created on : May 31, 2025, 3:46:30 PM
+    Author     : user
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import = "java.util.ArrayList" %>
-<%@page import ="dto.Book" %>
+<%@page  import="java.util.ArrayList,dto.Book" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,59 +13,49 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <div style="background:#999661; height:50px;padding: 20px; " >
-            <a href="index.jsp">home</a>|<a href="Login.jsp">Login</a>
-            <a href="viewcart.jsp">view cart</a>
-            <form action="SearchBookController" style="float:right">
-                <input type="text" name="txtsearch" value="<%= (request.getParameter("txtsearch")!=null)?request.getParameter("txtsearch"):"" %>"/>
-                <input type="submit" value="find"/>
-            </form>
-        </div>   
-
+        <jsp:include page="header.jsp"/> 
         <div style="float:left; width: 70%;">
-            <!-- comment -->
-            <% //nho import thu vien
-            // Lấy danh sách kết quả tìm kiếm
-            ArrayList<Book> list = (ArrayList<Book>) request.getAttribute("BOOK_RESULT");
-            
-            // Kiểm tra kết quả
-            if (list != null && !list.isEmpty()) {
+         <!-- cho nay de xuat kq tim kiem -->   
+           <%
+             ArrayList<Book> list=(ArrayList<Book>) request.getAttribute("RESULT");
+           
+            //xuat ket qua tim kiem(list)
+            if(list!=null && !list.isEmpty()){
                 for (Book book : list) {
-                    out.print("<div style='width:200px; height:350px; margin:15px; padding:10px; border:1px solid #ccc; border-radius:8px; display:inline-block; vertical-align:top; text-align:center; '>");
+                    out.print("<div style='float:left;margin:1%'>");
                     out.print("<form action='BorrowController'>");
                     out.print("<input type='hidden' name='txtid' value='"+book.getId()+"' />");
                     out.print("<input type='hidden' name='txtsearch' value='"+request.getParameter("txtsearch")+"' />");
-                    out.print("<img src='" + book.getUrl() + "' width='150' height='150' />");
-                    out.print("<br/>ID: " + book.getId());
-                    out.print("<br/>Title: " + book.getTitle());
-                    out.print("<br/>Category: " + book.getCategory());
-                    out.print("<br/>Available Copy: " + book.getAvailable_copies());
-
-                    if (book.getAvailable_copies() > 0) {
-                        out.print("<br/><input type='submit' value='Request Borrow'/><br/>");
-                    } else {
-                        out.print("<br/><b>Chưa có</b>");
-                        out.print("<br/><a href='index.jsp'>Quay lại</a>");
+                    out.print("<img src='"+ book.getUrl() +"'   />");
+                    out.print("<br/>id:" + book.getId());
+                    out.print("<br/>title:" + book.getTitle());
+                    out.print("<br/>category:" + book.getCategory());
+                    out.print("<br/>available copy:" + book.getAvailable_copies());
+                    if(book.getAvailable_copies()>0){
+                        out.print("<br/><input type='submit' value='request borrow' /> ");
                     }
-
                     out.print("</form>");
                     out.print("</div>");
                 }
             }
-
-            %>
-            <!<!-- comment -->
-        </div> 
-
-
-        <div style="float:left; width: 30%; background: #ffffcc;">    
-            <form action="RegisterController" method="post" style=" padding: 5%" >
-                <p>name:<input type="text" name="txtname" required="">*</p>
-                <p>email<input type="text" name="txtemail" required="">*</p>
-                <p>password:<input type="password" name="txtpassword" required="">*</p>
-                <p>confirm password:<input type="password" name="txtconfirmpassword" required="">*</p>
-                <p><input type="submit" name="btn" value="submit"></p>
-            </form>
-        </div>   
+            else{
+                out.print("<h3>not found</h3>");
+               
+            }
+           
+           %> 
+            
+          <!-- het xuat tim kiem-->  
+        </div>    
+    <div style="float:left; width: 30%; background: #ffffcc;">    
+        <form action="RegisterController" style=" padding: 5%"  method="post">
+            <p>name:<input type="text" name="txtname" required="">*</p>
+            <p>email<input type="text" name="txtemail" required="" >*</p>
+            <p>password:<input type="password" name="txtpassword" required="">*</p>
+            <p>confirm password:<input type="password" name="txtconfirmpassword" required="">*</p>
+            <p><input type="submit" name="btn" value="submit"></p>
+        </form>
+      </div>   
+           <jsp:include page="footer.jsp"/>
     </body>
 </html>

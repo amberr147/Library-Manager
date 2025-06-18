@@ -2,13 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+
 package controllers;
 
 import dao.BookDAO;
 import dto.Book;
+import dto.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,98 +20,67 @@ import java.util.ArrayList;
 
 /**
  *
- * @author DELL
+ * @author user
  */
+@WebServlet(name="BorrowController", urlPatterns={"/BorrowController"})
 public class BorrowController extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet BorrowController</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet BorrowController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+   
+   public void processRequest(HttpServletRequest request, HttpServletResponse response){
+     try{
+        HttpSession session=request.getSession(); 
+        User us=(User) session.getAttribute("user");
+        if(us==null){
+            request.setAttribute("ERROR", "Ban can login cho thao tac muon sach");
+            request.getRequestDispatcher("Login.jsp").forward(request, response);
         }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        try {
-            String id = request.getParameter("txtid");
-            Book b = null;
-            if (id != null) {
-                BookDAO d = new BookDAO();
-                b = d.getBook(Integer.parseInt(id.trim()));
+        else{
+            String id=request.getParameter("txtid");
+            Book b=null;
+            if(id!=null){
+                BookDAO d=new BookDAO();
+                b=d.getBook(Integer.parseInt(id.trim()));
             }
-            if (b != null) {
+            if(b!=null){
 
-                HttpSession session = request.getSession();
-                ArrayList<Book> list = (ArrayList<Book>) session.getAttribute("txtid");
-                if (list == null) {
-                    list = new ArrayList<>();
+                ArrayList<Book> list=(ArrayList<Book>) session.getAttribute("CART");
+                if(list==null){
+                    list=new ArrayList<>();
                     list.add(b);
-                } else {
-                    boolean found = false;
-                    for(Book book : list){
-                        if(book.getId() == b.getId()){ //book laf cos sawnx, b laf sawps them doo
-                            found = true;
+                }else{
+                    boolean found=false;
+                    for(Book book: list){
+                        if(book.getId()==b.getId())
+                        {
+                            found=true;
                             break;
                         }
                     }
                     if(!found) list.add(b);
                 }
-                session.setAttribute("CART", list);
+                session.setAttribute("CART",list);
                 request.getRequestDispatcher("SearchBookController").forward(request, response);
             }
+        }//ket thuc else
+     }catch(Exception e){
+         e.printStackTrace();
+     }
+   }
+    
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        processRequest(request,response);
+    } 
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+  
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+    throws ServletException, IOException {
+          processRequest(request,response);
     }
 
-    /**
+    /** 
      * Returns a short description of the servlet.
-     *
      * @return a String containing servlet description
      */
     @Override
